@@ -1,1 +1,699 @@
-<h1>Mandasi Tracker</h1><p>Welcome</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Msika Wanga – Sales Tracker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23E8521A'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='38' font-family='sans-serif' fill='white'>M</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F4F0;
+  --surface: #FFFFFF;
+  --accent: #E8521A;
+  --accent-dark: #C03E0E;
+  --accent2: #D4920A;
+  --green: #1E8A4C;
+  --red: #C0392B;
+  --text: #18150F;
+  --muted: #7A7068;
+  --border: #E2D8CE;
+  --shadow: 0 2px 16px rgba(30,15,5,0.07);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--accent);
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 64px;
+  box-shadow: 0 3px 16px rgba(232,82,26,0.35);
+  position: sticky; top: 0; z-index: 200;
+}
+
+.app-logo {
+  width: 40px; height: 40px;
+  background: white;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  letter-spacing: 0;
+}
+
+header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; line-height: 1; }
+header .sub { font-size: 11px; opacity: 0.8; margin-top: 1px; }
+
+.header-date {
+  margin-left: auto;
+  background: rgba(255,255,255,0.18);
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── MAIN ── */
+main { max-width: 720px; margin: 0 auto; padding: 20px 16px 90px; }
+
+/* ── DATE ROW ── */
+.date-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.date-row label { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0.4px; }
+.date-row input[type=date] {
+  border: 2px solid var(--border); border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+  background: white; color: var(--text); cursor: pointer;
+}
+.date-row input[type=date]:focus { outline: none; border-color: var(--accent); }
+
+/* ── SUMMARY CARDS ── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.sum-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.sum-card .lbl { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.sum-card .val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; margin-top: 3px; line-height: 1; }
+.sum-card .cur { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.sum-card.rev .val { color: var(--accent); }
+.sum-card.cst .val { color: var(--red); }
+.sum-card.pft .val { color: var(--green); }
+
+/* ── SECTION TITLE ── */
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 0.6px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+}
+
+/* ── ITEM CARDS ── */
+.items-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+
+.item-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.item-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1.5px solid var(--border);
+  background: #FDFBF8;
+}
+
+.item-name { font-weight: 900; font-size: 15px; flex: 1; }
+.cat-badge {
+  font-size: 10px; font-weight: 800;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 6px; padding: 2px 8px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px;
+}
+.del-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--red); font-size: 13px; font-weight: 800;
+  padding: 4px 8px; border-radius: 6px;
+  transition: background 0.15s;
+  letter-spacing: 0.5px;
+}
+.del-btn:hover { background: #fdecea; }
+
+/* ── PRODUCTION SECTION ── */
+.prod-section {
+  padding: 10px 14px;
+  background: #FFF8F0;
+  border-bottom: 1.5px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+}
+
+.prod-field { display: flex; flex-direction: column; gap: 4px; }
+.prod-field label { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.prod-field input {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 7px 10px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+  background: white; color: var(--text); width: 130px;
+}
+.prod-field input:focus { outline: none; border-color: var(--accent2); background: white; }
+
+.prod-info {
+  font-size: 12px; font-weight: 700; color: var(--accent2);
+  border: 1.5px solid #F5E3A5; border-radius: 8px;
+  padding: 7px 12px; background: #FFFBEE;
+  align-self: flex-end;
+}
+.prod-info.warn { color: var(--red); border-color: #F5C6C3; background: #FEF0EF; }
+
+/* ── FIELDS GRID ── */
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: none;
+}
+
+.f-cell {
+  padding: 10px 12px;
+  border-right: 1px solid var(--border);
+}
+.f-cell:last-child { border-right: none; }
+.f-cell label { display: block; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.f-cell input {
+  width: 100%;
+  border: 1.5px solid var(--border); border-radius: 7px;
+  padding: 6px 8px;
+  font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+  background: var(--bg); color: var(--text);
+}
+.f-cell input:focus { outline: none; border-color: var(--accent); background: white; }
+.f-cell input[readonly] { background: #F0F0F0; color: var(--muted); cursor: default; }
+
+/* ── ITEM FOOTER ── */
+.item-foot {
+  padding: 8px 14px;
+  background: #F7F3EE;
+  border-top: 1.5px solid var(--border);
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+}
+.foot-stat { font-size: 12px; font-weight: 700; }
+.foot-stat .lbl { color: var(--muted); font-weight: 600; }
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+
+/* ── ADD ITEM FORM ── */
+.add-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 2px dashed var(--accent2);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 28px;
+}
+.add-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 19px; letter-spacing: 0.5px;
+  color: var(--accent2); margin-bottom: 14px;
+}
+.add-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 12px;
+}
+.add-grid input, .add-grid select {
+  width: 100%;
+  border: 2px solid var(--border); border-radius: 10px;
+  padding: 10px 12px;
+  font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+  background: var(--bg); color: var(--text);
+}
+.add-grid input:focus, .add-grid select:focus { outline: none; border-color: var(--accent2); background: white; }
+.add-grid input::placeholder { color: #bbb; font-weight: 600; }
+
+.field-note { font-size: 11px; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+
+.btn { 
+  background: var(--accent); color: white; border: none;
+  border-radius: 10px; padding: 11px 24px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+}
+.btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn:active { transform: none; }
+
+/* ── CATEGORY HINT ── */
+.cat-hint {
+  font-size: 11px; color: var(--muted); font-weight: 700;
+  margin-top: 8px; line-height: 1.6;
+}
+
+/* ── HISTORY ── */
+.history-table {
+  background: var(--surface); border-radius: var(--radius);
+  border: 1.5px solid var(--border); overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.hist-row {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 10px 14px; align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px; font-weight: 700;
+}
+.hist-row:last-child { border-bottom: none; }
+.hist-row.head { background: #F2EDE8; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.hist-empty { padding: 16px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #18150F; color: white;
+  padding: 11px 22px; border-radius: 50px;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 520px) {
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .sum-card.pft { grid-column: span 2; }
+  .fields-grid { grid-template-columns: 1fr 1fr; }
+  .f-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .f-cell:nth-child(3), .f-cell:nth-child(4) { border-bottom: none; }
+  .add-grid { grid-template-columns: 1fr; }
+  .hist-row { grid-template-columns: 1.5fr 1fr 1fr; }
+  .hist-row > :last-child { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-logo">MW</div>
+  <div>
+    <h1>Msika Wanga</h1>
+    <div class="sub">Daily Sales &amp; Profit Tracker</div>
+  </div>
+  <div class="header-date" id="headerDate">—</div>
+</header>
+
+<main>
+
+  <!-- Date -->
+  <div class="date-row">
+    <label>DATE</label>
+    <input type="date" id="dateInput">
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-grid">
+    <div class="sum-card rev">
+      <div class="lbl">Revenue</div>
+      <div class="val" id="sumRev">0</div>
+      <div class="cur">MWK today</div>
+    </div>
+    <div class="sum-card cst">
+      <div class="lbl">Total Cost</div>
+      <div class="val" id="sumCost">0</div>
+      <div class="cur">MWK today</div>
+    </div>
+    <div class="sum-card pft">
+      <div class="lbl">Net Profit</div>
+      <div class="val" id="sumProfit">0</div>
+      <div class="cur">MWK today</div>
+    </div>
+  </div>
+
+  <!-- Items -->
+  <div class="sec-title">Today's Stock &amp; Sales</div>
+  <div class="items-list" id="itemsList"></div>
+
+  <!-- Add Item -->
+  <div class="add-card">
+    <h3>Add New Item</h3>
+    <div class="add-grid">
+      <input type="text" id="aName" placeholder="Item name (e.g. Cooking Oil)" />
+      <select id="aCat">
+        <option value="">-- Select Category --</option>
+        <option value="pieces">Pieces (counted units, e.g. Mandasi, Bread)</option>
+        <option value="litres">Litres (liquid, e.g. Oil, Juice)</option>
+        <option value="kg">Kilograms (e.g. Tomatoes, Sugar, Rice)</option>
+        <option value="bags">Bags (e.g. Charcoal, Maize)</option>
+        <option value="bundles">Bundles (e.g. Firewood, Vegetables)</option>
+        <option value="bottles">Bottles (e.g. Water, Soda, Sauce)</option>
+        <option value="crates">Crates (e.g. Eggs, Drinks)</option>
+        <option value="packets">Packets (e.g. Crisps, Biscuits)</option>
+        <option value="custom">Custom unit</option>
+      </select>
+      <input type="text" id="aCustomUnit" placeholder="Custom unit name" style="display:none" />
+      <input type="number" id="aCapital" placeholder="Starting capital / stock amount" min="0" step="any" />
+      <input type="number" id="aBuy" placeholder="Buy/cost price per unit (MWK)" min="0" />
+      <input type="number" id="aSell" placeholder="Sell price per unit (MWK)" min="0" />
+    </div>
+    <div class="field-note">
+      Capital = total starting stock (e.g. 50 litres of oil, or 200 pieces of mandasi).
+      The app will track how much you have sold vs remaining.
+    </div>
+    <button class="btn" onclick="addItem()">Add Item</button>
+  </div>
+
+  <!-- History -->
+  <div class="sec-title">Sales History</div>
+  <div id="historyWrap">
+    <div class="hist-empty">No records yet. Start entering sales above.</div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  CATEGORY CONFIG
+// ══════════════════════════════════════════════
+const CAT_LABELS = {
+  pieces: 'Pieces',
+  litres: 'Litres',
+  kg: 'Kg',
+  bags: 'Bags',
+  bundles: 'Bundles',
+  bottles: 'Bottles',
+  crates: 'Crates',
+  packets: 'Packets',
+  custom: ''
+};
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let state = JSON.parse(localStorage.getItem('mw_state2') || 'null') || {
+  items: [
+    {
+      id: 1,
+      name: 'Mandasi',
+      category: 'pieces',
+      customUnit: '',
+      capital: 200,
+      buyPrice: 0,
+      sellPrice: 250,
+      soldQty: 0
+    }
+  ],
+  nextId: 2
+};
+
+let history = JSON.parse(localStorage.getItem('mw_history2') || '{}');
+
+function save() {
+  localStorage.setItem('mw_state2', JSON.stringify(state));
+}
+function saveHistory() {
+  localStorage.setItem('mw_history2', JSON.stringify(history));
+}
+
+// ══════════════════════════════════════════════
+//  DATE
+// ══════════════════════════════════════════════
+const dateInput = document.getElementById('dateInput');
+const today = new Date().toISOString().split('T')[0];
+dateInput.value = today;
+
+function fmtDate(d) {
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+document.getElementById('headerDate').textContent = fmtDate(today);
+
+dateInput.addEventListener('change', () => {
+  document.getElementById('headerDate').textContent = fmtDate(dateInput.value);
+  loadDay(dateInput.value);
+});
+
+function loadDay(d) {
+  const saved = history[d];
+  if (saved && saved.items) {
+    saved.items.forEach(s => {
+      const item = state.items.find(i => i.id === s.id);
+      if (item) {
+        item.soldQty = s.soldQty;
+        item.capital = s.capital;
+        item.buyPrice = s.buyPrice;
+        item.sellPrice = s.sellPrice;
+      }
+    });
+    state.items.forEach(i => {
+      if (!saved.items.find(s => s.id === i.id)) i.soldQty = 0;
+    });
+  } else {
+    state.items.forEach(i => i.soldQty = 0);
+  }
+  render();
+}
+
+// ══════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════
+function unitLabel(item) {
+  if (item.category === 'custom') return item.customUnit || 'units';
+  return CAT_LABELS[item.category] || 'units';
+}
+
+function catDisplay(item) {
+  if (item.category === 'custom') return (item.customUnit || 'Custom').toUpperCase();
+  return (CAT_LABELS[item.category] || item.category).toUpperCase();
+}
+
+function mwk(n) { return 'MWK ' + Number(n).toLocaleString('en-MW'); }
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+function render() {
+  const list = document.getElementById('itemsList');
+  list.innerHTML = '';
+
+  let totalRev = 0, totalCost = 0;
+
+  state.items.forEach(item => {
+    const sold = item.soldQty || 0;
+    const remaining = Math.max(0, (item.capital || 0) - sold);
+    const revenue = sold * (item.sellPrice || 0);
+    const cost = (item.capital || 0) * (item.buyPrice || 0);
+    const profit = revenue - cost;
+    const unit = unitLabel(item);
+    const capPct = item.capital > 0 ? (sold / item.capital) * 100 : 0;
+    const overSold = sold > item.capital && item.capital > 0;
+
+    totalRev += revenue;
+    totalCost += cost;
+
+    const prodInfo = item.capital > 0
+      ? `${remaining.toLocaleString()} ${unit} remaining (${Math.min(100, Math.round(capPct))}% sold)`
+      : `${sold} ${unit} sold`;
+
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <div class="item-head">
+        <div class="item-name">${item.name}</div>
+        <div class="cat-badge">${catDisplay(item)}</div>
+        <button class="del-btn" onclick="deleteItem(${item.id})">REMOVE</button>
+      </div>
+
+      <div class="prod-section">
+        <div class="prod-field">
+          <label>Starting Capital (${unit})</label>
+          <input type="number" min="0" step="any" value="${item.capital}"
+            oninput="updateField(${item.id},'capital',this.value)" />
+        </div>
+        <div class="prod-field">
+          <label>${item.category === 'litres' ? 'Litres Sold' : item.category === 'kg' ? 'Kg Sold' : 'Qty Sold'} (${unit})</label>
+          <input type="number" min="0" step="any" value="${sold}"
+            oninput="updateField(${item.id},'soldQty',this.value)" />
+        </div>
+        <div class="prod-info ${overSold ? 'warn' : ''}">
+          ${overSold ? 'Sold exceeds capital!' : prodInfo}
+        </div>
+      </div>
+
+      <div class="fields-grid">
+        <div class="f-cell">
+          <label>Buy Price / ${unit} (MWK)</label>
+          <input type="number" min="0" value="${item.buyPrice}"
+            oninput="updateField(${item.id},'buyPrice',this.value)" />
+        </div>
+        <div class="f-cell">
+          <label>Sell Price / ${unit} (MWK)</label>
+          <input type="number" min="0" value="${item.sellPrice}"
+            oninput="updateField(${item.id},'sellPrice',this.value)" />
+        </div>
+        <div class="f-cell">
+          <label>Revenue</label>
+          <input type="text" readonly value="${revenue.toLocaleString()}" />
+        </div>
+        <div class="f-cell">
+          <label>Total Capital Cost</label>
+          <input type="text" readonly value="${cost.toLocaleString()}" />
+        </div>
+      </div>
+
+      <div class="item-foot">
+        <div class="foot-stat"><span class="lbl">Sold: </span>${sold.toLocaleString()} ${unit}</div>
+        <div class="foot-stat"><span class="lbl">Revenue: </span>${mwk(revenue)}</div>
+        <div class="foot-stat"><span class="lbl">Cost: </span>${mwk(cost)}</div>
+        <div class="foot-stat ${profit >= 0 ? 'pos' : 'neg'}">
+          ${profit >= 0 ? '+' : ''} ${mwk(profit)} Profit
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  const totalProfit = totalRev - totalCost;
+
+  document.getElementById('sumRev').textContent = totalRev.toLocaleString();
+  document.getElementById('sumCost').textContent = totalCost.toLocaleString();
+  document.getElementById('sumProfit').textContent = totalProfit.toLocaleString();
+  document.getElementById('sumProfit').style.color = totalProfit >= 0 ? 'var(--green)' : 'var(--red)';
+
+  snapshotDay();
+  renderHistory();
+  save();
+}
+
+// ══════════════════════════════════════════════
+//  FIELD UPDATE
+// ══════════════════════════════════════════════
+function updateField(id, field, val) {
+  const item = state.items.find(i => i.id === id);
+  if (!item) return;
+  item[field] = parseFloat(val) || 0;
+  render();
+}
+
+// ══════════════════════════════════════════════
+//  ADD ITEM
+// ══════════════════════════════════════════════
+document.getElementById('aCat').addEventListener('change', function() {
+  document.getElementById('aCustomUnit').style.display = this.value === 'custom' ? 'block' : 'none';
+});
+
+function addItem() {
+  const name = document.getElementById('aName').value.trim();
+  const category = document.getElementById('aCat').value;
+  const customUnit = document.getElementById('aCustomUnit').value.trim();
+  const capital = parseFloat(document.getElementById('aCapital').value) || 0;
+  const buyPrice = parseFloat(document.getElementById('aBuy').value) || 0;
+  const sellPrice = parseFloat(document.getElementById('aSell').value) || 0;
+
+  if (!name) { showToast('Enter an item name'); return; }
+  if (!category) { showToast('Select a category'); return; }
+  if (category === 'custom' && !customUnit) { showToast('Enter a custom unit name'); return; }
+
+  state.items.push({
+    id: state.nextId++,
+    name, category, customUnit,
+    capital, buyPrice, sellPrice,
+    soldQty: 0
+  });
+
+  document.getElementById('aName').value = '';
+  document.getElementById('aCat').value = '';
+  document.getElementById('aCustomUnit').value = '';
+  document.getElementById('aCustomUnit').style.display = 'none';
+  document.getElementById('aCapital').value = '';
+  document.getElementById('aBuy').value = '';
+  document.getElementById('aSell').value = '';
+
+  render();
+  showToast(name + ' added');
+}
+
+// ══════════════════════════════════════════════
+//  DELETE ITEM
+// ══════════════════════════════════════════════
+function deleteItem(id) {
+  if (!confirm('Remove this item from the list?')) return;
+  state.items = state.items.filter(i => i.id !== id);
+  render();
+  showToast('Item removed');
+}
+
+// ══════════════════════════════════════════════
+//  SNAPSHOT / HISTORY
+// ══════════════════════════════════════════════
+function snapshotDay() {
+  const d = dateInput.value;
+  const snap = {
+    items: state.items.map(i => ({
+      id: i.id, name: i.name, category: i.category, customUnit: i.customUnit,
+      capital: i.capital, buyPrice: i.buyPrice, sellPrice: i.sellPrice, soldQty: i.soldQty
+    })),
+    revenue: state.items.reduce((a,i) => a + (i.soldQty||0)*(i.sellPrice||0), 0),
+    cost: state.items.reduce((a,i) => a + (i.capital||0)*(i.buyPrice||0), 0)
+  };
+  snap.profit = snap.revenue - snap.cost;
+  history[d] = snap;
+  saveHistory();
+}
+
+function renderHistory() {
+  const wrap = document.getElementById('historyWrap');
+  const dates = Object.keys(history).sort().reverse().slice(0, 14);
+
+  if (!dates.length) {
+    wrap.innerHTML = '<div class="hist-empty">No records yet.</div>';
+    return;
+  }
+
+  const rows = dates.map(d => {
+    const s = history[d];
+    const p = s.profit || 0;
+    return `<div class="hist-row">
+      <div>${fmtDate(d)}</div>
+      <div>MWK ${(s.revenue||0).toLocaleString()}</div>
+      <div>MWK ${(s.cost||0).toLocaleString()}</div>
+      <div class="${p>=0?'pos':'neg'}">${p>=0?'+':''}MWK ${Math.abs(p).toLocaleString()}</div>
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="history-table">
+      <div class="hist-row head">
+        <div>Date</div><div>Revenue</div><div>Cost</div><div>Profit</div>
+      </div>
+      ${rows}
+    </div>`;
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>
